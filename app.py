@@ -14,11 +14,12 @@ app = FastAPI()
 # Enable CORS to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace "*" with your frontend URL for better security
-    allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, OPTIONS, etc.)
+    allow_origins=["*"],  # Allows all origins (for testing; replace with frontend URL in production)
+    allow_credentials=True,  # Only needed if using cookies/auth headers (you can set it to False if unnecessary)
+    allow_methods=["OPTIONS", "POST", "GET"],  # ✅ Explicitly allow OPTIONS requests
     allow_headers=["*"],  # Allow all headers
 )
+
 
 # Loading textual data
 def extract_text_from_docx(file_path):
