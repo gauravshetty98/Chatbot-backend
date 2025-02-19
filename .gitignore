@@ -4,3 +4,6 @@
 #Ignore venv files
 .venv/
 venv/
+
+#chatbot html
+.chatbot.html
