@@ -44,7 +44,7 @@ app = FastAPI()
 # Enable CORS to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://gauravshetty98.github.io"],  # Allow your GitHub Pages origin
+    allow_origins=["*"],  # Allow your GitHub Pages origin
     allow_credentials=True,
     allow_methods=["POST", "OPTIONS"],  # Explicitly allow POST and OPTIONS
     allow_headers=["Content-Type"],  # Explicitly allow Content-Type header
