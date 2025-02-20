@@ -9,18 +9,6 @@ import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
-
-# Enable CORS to allow frontend requests
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins (for testing; replace with frontend URL in production)
-    allow_credentials=True,  # Only needed if using cookies/auth headers (you can set it to False if unnecessary)
-    allow_methods=["OPTIONS", "POST", "GET"],  # ✅ Explicitly allow OPTIONS requests
-    allow_headers=["*"],  # Allow all headers
-)
-
-
 # Loading textual data
 def extract_text_from_docx(file_path):
     doc = Document(file_path)
@@ -52,6 +40,15 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
 
 app = FastAPI()
+
+# Enable CORS to allow frontend requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://gauravshetty98.github.io"],  # Allow your GitHub Pages origin
+    allow_credentials=True,
+    allow_methods=["POST", "OPTIONS"],  # Explicitly allow POST and OPTIONS
+    allow_headers=["Content-Type"],  # Explicitly allow Content-Type header
+)
 
 class QueryRequest(BaseModel):
     query: str
@@ -85,6 +82,10 @@ def ask_question(request: QueryRequest):
     retrieved_chunks = search_query(request.query, text_chunks)
     response = generate_response_gemini(request.query, retrieved_chunks)
     return {"query": request.query, "response": response}
+
+@app.options("/ask")
+async def options_ask():
+    return {"message": "OK"}
 
 # To run locally: uvicorn app:app --reload
 
