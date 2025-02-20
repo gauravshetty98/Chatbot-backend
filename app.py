@@ -8,6 +8,7 @@ from docx import Document
 import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
+import markdown
 
 # Loading textual data
 def extract_text_from_docx(file_path):
@@ -81,6 +82,7 @@ def generate_response_gemini(query, retrieved_chunks):
 def ask_question(request: QueryRequest):
     retrieved_chunks = search_query(request.query, text_chunks)
     response = generate_response_gemini(request.query, retrieved_chunks)
+    formatted_response = markdown.markdown(response)
     return {"query": request.query, "response": response}
 
 @app.options("/ask")
