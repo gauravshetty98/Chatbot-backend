@@ -9,15 +9,15 @@ import numpy as np
 from google import genai
 import os
 import requests
+from dotenv import load_dotenv
 
-# Set DeepSeek API Key
-# os.environ["OPENAI_API_KEY"] = "sk-2cf68c5515814617813e95d0965e892f"  # Replace with your key
-# DEEPSEEK_API_KEY = "sk-2cf68c5515814617813e95d0965e892f"  # Replace with your actual key
-# DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"  # Check DeepSeek's latest API docs
+load_dotenv()
+
+
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 # gemini api
-API_KEY = "AIzaSyDvXX04aAWsXdYVIrTKwVUdGkrOMpgoQgI"  # Replace with your actual API key
-client = genai.Client(api_key=API_KEY)
+client = genai.Client(api_key=GOOGLE_API_KEY)
 
 
 def extract_text_from_docx(file_path):
