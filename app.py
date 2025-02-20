@@ -45,7 +45,7 @@ app = FastAPI()
 # Enable CORS to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow your GitHub Pages origin
+    allow_origins=["https://gauravshetty98.github.io/"],  # Allow your GitHub Pages origin
     allow_credentials=True,
     allow_methods=["POST", "OPTIONS"],  # Explicitly allow POST and OPTIONS
     allow_headers=["Content-Type"],  # Explicitly allow Content-Type header
@@ -83,7 +83,7 @@ def ask_question(request: QueryRequest):
     retrieved_chunks = search_query(request.query, text_chunks)
     response = generate_response_gemini(request.query, retrieved_chunks)
     formatted_response = markdown.markdown(response)
-    return {"query": request.query, "response": response}
+    return {"query": request.query, "response": formatted_response}
 
 @app.options("/ask")
 async def options_ask():
