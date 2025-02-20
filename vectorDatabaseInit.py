@@ -1,6 +1,3 @@
-#AIzaSyDvXX04aAWsXdYVIrTKwVUdGkrOMpgoQgI
-
-
 from docx import Document
 from sentence_transformers import SentenceTransformer
 import re
