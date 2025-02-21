@@ -9,6 +9,8 @@ import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 import markdown
+from fastapi.responses import JSONResponse
+
 
 # Loading textual data
 def extract_text_from_docx(file_path):
@@ -42,14 +44,19 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 app = FastAPI()
 
+origins = [
+    "https://gauravshetty98.github.io",  # Add your frontend domain here
+]
+
 # Enable CORS to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://gauravshetty98.github.io/"],  # Allow your GitHub Pages origin
+    allow_origins=origins,  # Allows requests from specified origins
     allow_credentials=True,
-    allow_methods=["POST", "OPTIONS"],  # Explicitly allow POST and OPTIONS
-    allow_headers=["Content-Type"],  # Explicitly allow Content-Type header
+    allow_methods=["*"],  # Allows all HTTP methods
+    allow_headers=["*"],  # Allows all headers
 )
+
 
 class QueryRequest(BaseModel):
     query: str
@@ -87,7 +94,12 @@ def ask_question(request: QueryRequest):
 
 @app.options("/ask")
 async def options_ask():
-    return {"message": "OK"}
+    headers = {
+        "Access-Control-Allow-Origin": "https://gauravshetty98.github.io",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+    }
+    return JSONResponse(content={"message": "OK"}, headers=headers)
 
 # To run locally: uvicorn app:app --reload
 
