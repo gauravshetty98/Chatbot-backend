@@ -6,6 +6,7 @@
 venv/
 
 #chatbot html
-.chatbot.html
+chatbot.html
 test.html
 test.ipynb
+test.py

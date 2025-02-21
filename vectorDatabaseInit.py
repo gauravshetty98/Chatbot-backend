@@ -31,36 +31,6 @@ def chunk_text(text, chunk_size=300, overlap=50):
     
     return chunks
 
-def search_query(query_text, index, model, text_chunks, top_k=3):
-    query_embedding = model.encode(query_text).reshape(1, -1)  # Embed query
-    distances, indices = index.search(query_embedding, top_k)  # Search closest embeddings
-
-    results = [text_chunks[i] for i in indices[0]]  # Retrieve top matching chunks
-    return results
-
-
-def generate_response_gemini(query, retrieved_chunks):
-    """
-    Generates a response using the Google Gemini API based on retrieved document chunks.
-    """
-    prompt = f"""
-    You are an AI assistant answering questions about Gaurav Shetty.
-    Use the following extracted information to answer the user's query.
-
-    Extracted Info:
-    {' '.join(retrieved_chunks)}
-
-    User Query: {query}
-
-    Answer:
-    """
-
-    response = client.models.generate_content(
-        model="gemini-1.5-flash",  # Use "gemini-2.0-flash" for a cheaper/faster model
-        contents=prompt
-    )
-
-    return response.text  # Extract the response text
 
 # Example Usage
 doc_text = extract_text_from_docx("portfolioContent.docx")
@@ -86,21 +56,3 @@ index.add(embeddings_array)
 # Save FAISS Index
 faiss.write_index(index, "vector_database.index")
 print("FAISS Index Created & Saved Successfully")
-
-
-
-
-# Load the FAISS Index
-index = faiss.read_index("vector_database.index")
-
-# Generate query
-query = "What deep learning algorithms does he know?"
-
-# find relevant information
-retrieved_chunks = search_query(query, index, embed_model, text_chunks)
-
-
-# Fetch response from LLM
-response = generate_response_gemini(query, retrieved_chunks)
-
-print("\n🔹 DeepSeek Response:\n", response)
