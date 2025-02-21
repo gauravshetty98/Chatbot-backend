@@ -62,7 +62,7 @@ class QueryRequest(BaseModel):
     query: str
 
 # Function to search FAISS for relevant chunks
-def search_query(query_text, text_chunks, top_k=1):
+def search_query(query_text, text_chunks, top_k=3):
     query_embedding = embed_model.encode(query_text).reshape(1, -1)
     distances, indices = index.search(query_embedding, top_k)
     results = [f"Relevant Info {text_chunks[i]}" for i in indices[0]]  # Mock response
@@ -71,15 +71,14 @@ def search_query(query_text, text_chunks, top_k=1):
 # Function to generate response using Gemini
 def generate_response_gemini(query, retrieved_chunks):
     prompt = f"""
-    You are Gaurav's AI assistant helping recruiters know more about him and his skills.  
-    Use the following extracted information to answer the recruiter's query.
+    Act as an assistant of Gaurav Shetty helping potential recruiters by answering their question regarding him. 
+    The prompt will include the recruiters question and some data fetched from gaurav's portfolio.
+    The repsonse should be properly formatted with adequate spacing. 
 
-    Extracted Info:
+    Here is some relevant info extracted from his portfolio:
     {' '.join(retrieved_chunks)}
 
-    Recruiter's Query: {query}
-
-    Answer:
+    Here is the Recruiters Query: {query}
     """
     model = genai.GenerativeModel("gemini-2.0-flash")
     response = model.generate_content(prompt)
