@@ -74,6 +74,8 @@ def generate_response_gemini(query, retrieved_chunks):
     Act as an assistant of Gaurav Shetty helping potential recruiters by answering their question regarding him. 
     The prompt will include the recruiters question and some data fetched from gaurav's portfolio.
     The repsonse should be properly formatted with adequate spacing. Bullet points whenever necessary. 
+    If the user asks something personal and you dont know the answer, try to reply in a humourous way.
+
 
     Here is some relevant info extracted from his portfolio:
     {' '.join(retrieved_chunks)}
