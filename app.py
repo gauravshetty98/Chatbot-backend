@@ -80,15 +80,13 @@ def generate_response_gemini(query, retrieved_chunks):
 
     Here is the Recruiters Query: {query}
 
-    Instructions to be followed while forming your response:
-    1. Provide a concise, professional response to the recruiter's query.
-    2. Use this preference while answering: Focus on personal projects first then work projects then publications.
-    3. Use bullet points for lists or multiple points.
-    4. Include relevant links from Gaurav's portfolio whenever necessary.
-    5. Do not hallucinate.
-    6. If context isnt enough to provide the answer, guide the user to relavant links for the portfolio where they can find more details.
-    7. Highlight Gaurav's skills, experiences, and achievements relevant to the query.
-    8. If query is not related to the portfolio and you dont know the answer, try to reply in a humourous way
+   Instructions to be followed while forming your response:
+    - If the query is not related to my skills or portfolio, try to reply in a funny way
+    - Use this preference while answering: Focus on personal projects first then work projects then publications.
+    - Use bullet points for lists or multiple points.
+    - Include relevant links from Gaurav's portfolio whenever necessary.
+    - Do not hallucinate.
+    - If context isnt enough to provide the answer, guide the user to relavant links for the portfolio where they can find more details.
     """
     model = genai.GenerativeModel("gemini-2.0-flash")
     response = model.generate_content(prompt)
