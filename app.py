@@ -17,7 +17,7 @@ def extract_text_from_docx(file_path):
     doc = Document(file_path)
     return "\n".join([para.text for para in doc.paragraphs if para.text.strip()])
 
-def chunk_text(text, chunk_size=300, overlap=50):
+def chunk_text(text, chunk_size=500, overlap=100):
     words = text.split()  # Split text into words
     chunks = []
     
@@ -62,7 +62,7 @@ class QueryRequest(BaseModel):
     query: str
 
 # Function to search FAISS for relevant chunks
-def search_query(query_text, text_chunks, top_k=3):
+def search_query(query_text, text_chunks, top_k=5):
     query_embedding = embed_model.encode(query_text).reshape(1, -1)
     distances, indices = index.search(query_embedding, top_k)
     results = [f"Relevant Info {text_chunks[i]}" for i in indices[0]]  # Mock response
@@ -73,14 +73,22 @@ def generate_response_gemini(query, retrieved_chunks):
     prompt = f"""
     Act as an assistant of Gaurav Shetty helping potential recruiters by answering their question regarding him. 
     The prompt will include the recruiters question and some data fetched from gaurav's portfolio.
-    The repsonse should be properly formatted with adequate spacing. Bullet points whenever necessary. 
-    If the user asks something personal and you dont know the answer, try to reply in a humourous way.
 
 
     Here is some relevant info extracted from his portfolio:
     {' '.join(retrieved_chunks)}
 
     Here is the Recruiters Query: {query}
+
+    Instructions:
+    1. Provide a concise, professional response to the recruiter's query.
+    2. Use bullet points for lists or multiple points.
+    3. Include relevant links from Gaurav's portfolio whenever necessary.
+    4. Do not hallucinate.
+    5. If context isnt enough to provide the answer, guide the user to relavant links for the portfolio where they can find more details.
+    6. Highlight Gaurav's skills, experiences, and achievements relevant to the query.
+    7. If query is not related to the portfolio and you dont know the answer, try to reply in a humourous way
+
     """
     model = genai.GenerativeModel("gemini-2.0-flash")
     response = model.generate_content(prompt)
