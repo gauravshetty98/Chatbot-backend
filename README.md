@@ -43,14 +43,56 @@ Instead of manually navigating through my portfolio, visitors can ask questions 
 
 ## **⚡ Setup & Usage**  
 
+There are two ways you can run this file. 
+1. Using docker
+2. Cloning the repository
+
+> [!TIP]
+> Create a `.env` file with your api key to access google's gemini models. Look at `.env.example` for reference
+
+
+### 🐳 Run with Docker
+
+You can run the entire backend API using Docker for an easy and consistent setup. Follow the steps below:
+
+### 1️⃣ Build the Docker Image
+
+From the root directory of the project, run:
+
+`docker build -t chatbot .`
+
+### 2️⃣ Run the Docker Container
+
+`docker run -d -p 8000:8000 chatbot `
+
+This will start the FastAPI server inside the Docker container and expose it at http://localhost:8000
+
+You can access the interactive API at:
+
+`http://localhost:8000/docs`
+
+It comes with a swagger UI capable of sending and receiving prompts and messages.
+
+
+### 📦 Notes
+
+Make sure Docker is installed and running on your system.
+
+The Dockerfile takes care of installing all dependencies and running `vectorDatabaseInit.py` to generate the FAISS index before starting the API server.
+
+Now you’re all set to use the chatbot locally via Docker! 🚀
+
+---
+
+### **📥 Cloning the repository**
 ### **1️⃣ Install Dependencies**  
 
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 ### **2️⃣ Initialize the FAISS Vector Database**
 To prepare the database, run:
 
-python vectorDatabaseInit.py
+`python vectorDatabaseInit.py`
 
 This will generate the FAISS index file (vector_database.index) containing the embeddings of the portfolio content.
 
@@ -58,11 +100,11 @@ This will generate the FAISS index file (vector_database.index) containing the e
 
 Start the FastAPI server using:
 
-uvicorn app:app --host 0.0.0.0 --port 8000
+`uvicorn app:app --host 0.0.0.0 --port 8000`
 
 Once the server is running, you can access the API documentation and test endpoints by visiting:
 
-http://127.0.0.1:8000/docs
+`http://127.0.0.1:8000/docs`
 
 ### **4️⃣ Interact with the Chatbot**
 
@@ -71,9 +113,13 @@ The frontend sends the query to the API, which retrieves relevant information us
 The Gemini-2.0-Flash model generates a response based on the retrieved data.
 The chatbot displays the AI-generated response dynamically.
 
+---
+
 ### **📢 Live Demo**
 Check out the live chatbot here:
 🔗 [Try it Now](https://gauravshetty98.github.io/portfolio/chatbot.html)
+
+---
 
 ### **📜 License** 
 This project is licensed under the MIT License – feel free to use and modify it!
