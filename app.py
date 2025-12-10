@@ -88,7 +88,7 @@ def generate_response_gemini(query, retrieved_chunks):
     - Do not hallucinate.
     - If context isnt enough to provide the answer, guide the user to relavant links for the portfolio where they can find more details.
     """
-    model = genai.GenerativeModel("gemini-2.0-flash")
+    model = genai.GenerativeModel("gemini-2.5-flash")
     response = model.generate_content(prompt)
     return response.text
 
